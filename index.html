@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" href="assets/css/reset.css"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        `
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card card-default">
+                    <div class="card-header">
+                        New Member Sign-Up
+                    </div>
+                    <div id="cardbody" class="card-body">
+
+                        <form role="form">
+                            <div class="form-group row">
+                                <label for="name-input">userID: (just strings for now no numbers!) </label>
+                                <input class="form-control" id="id-input" type="text">
+                            </div>
+                            <div class="form-group row">
+                                <label for="email-input">Password: </label>
+                                <input class="form-control" id="pwd-input" type="text">
+                                <button id="submitbutton" type="button" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card card-default">
+                    <div class="card-header">
+                        Log-In!
+                    </div>
+                    <div id="cardbody" class="card-body">
+
+                        <form role="form">
+                            <div class="form-group row">
+                                <label for="name-input">userID: </label>
+                                <input class="form-control" id="id-login" type="text">
+                            </div>
+                            <div class="form-group row">
+                                <label for="email-input">Password: </label>
+                                <input class="form-control" id="pwd-login" type="text">
+                                <button id="logbutton" type="button" class="btn btn-primary">Log In!</button>
+                                <button id='logout' type="button" class="btn btn-primary">Log Out!</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+    <script src="assets/javascript/app.js"></script>
+
+</body>
+
+</html>
