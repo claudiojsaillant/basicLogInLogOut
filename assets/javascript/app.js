@@ -21,8 +21,6 @@ var userLogged;
 database.ref().on('value', function (snap) {
     var userRef;
     if (snap.child("/userAuth").exists()) {
-        console.log('Trying to log :D');
-
         var currentid = snap.val().userAuth.userid;
         var currentpwd = snap.val().userAuth.userpwd;
         var howLong = currentid.length;
@@ -33,14 +31,16 @@ database.ref().on('value', function (snap) {
 
             idInDb = snap.val()[userRef].userid;
             pwdInDb = snap.val()[userRef].userpwd;
-          
 
             if (currentid === idInDb) {
                 console.log('Your id is good!')
                 if (currentpwd === pwdInDb) {
                     console.log('Good to log!')
                     userLogged = idInDb;
-                    alert(userLogged + " Has loged in to the webpage!")
+                    alert(userLogged + " Has loged in to the webpage!");
+                    $('#logbutton').hide();
+                    $('#logform').hide();
+                    $('#logout').show();
                     database.ref('/userAuth').set({})
                     isLogged = true;
                     database.ref(childRef + '/isLogged').set({
@@ -48,11 +48,14 @@ database.ref().on('value', function (snap) {
                     })
                 }
                 else {
-                    alert('Incorrect password')
+                    alert('Incorrect password.')
+                    $('#pwd-login').val('');
                 }
             }
             else {
                 alert('Incorrect ID.')
+                $('#id-login').val('');
+                $('#pwd-login').val('');
             }
         }
     }
@@ -72,15 +75,14 @@ $('#submitbutton').on('click', function (event) {
     var userid = $('#id-input').val();
     var userpwd = $('#pwd-input').val();
     printID = userid + userCount;
-    console.log(printID);
-    $('id-input').val('');
-    $('pwd-input').val('');
+    $('#id-input').val('');
+    $('#pwd-input').val('');
     alert("Your generated user id is : " + printID + " , when you log in, you have to use this ID with your password!");
 
     database.ref('/userCount').set({
         userCount: userCount
     })
-
+        
     var newUserRef = database.ref('/User' + userCount)
     userid = userid + userCount;
     newUserRef.set({
@@ -101,13 +103,19 @@ $('#logbutton').on('click', function () {
     })
 })
 
-$('#logout').on('click', function() {
+$('#logout').hide();
+$('#logout').on('click', function () {
     isLogged = false
-    loggedRef = '/User' + userLogged.charAt(userLogged.length-1) + '/isLogged';
+    loggedRef = '/User' + userLogged.charAt(userLogged.length - 1) + '/isLogged';
     console.log(loggedRef);
     database.ref(loggedRef).set({
         isLogged: false
     })
-    alert('User: ' + userLogged + ' has sign out.')
+    alert('User: ' + userLogged + ' has sign out.');
+    userLogged = '';
+    $('#logbutton').show();
+    $('#logform').show();
+    $('#logout').hide();
 })
+
 

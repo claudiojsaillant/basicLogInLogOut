@@ -16,12 +16,13 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
 </head>
 
 <body>
     <div class="container">
-        `
+        
         <div class="row">
             <div class="col-lg-6">
                 <div class="card card-default">
@@ -46,7 +47,7 @@
         </div>
         <div class="row">
             <div class="col-lg-6">
-                <div class="card card-default">
+                <div class="card card-default" id="logform">
                     <div class="card-header">
                         Log-In!
                     </div>
@@ -61,11 +62,14 @@
                                 <label for="email-input">Password: </label>
                                 <input class="form-control" id="pwd-login" type="text">
                                 <button id="logbutton" type="button" class="btn btn-primary">Log In!</button>
-                                <button id='logout' type="button" class="btn btn-primary">Log Out!</button>
+
                         </form>
+
                     </div>
                 </div>
+
             </div>
+            <button id='logout' type="button" class="btn btn-primary">Log Out!</button>
         </div>
     </div>
 
