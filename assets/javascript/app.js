@@ -17,9 +17,27 @@ var database = firebase.database();
 var userCount = 0;
 var isLogged;
 var userLogged;
+var favortiteArray = ['family'];
+var actualUserFav;
 
 database.ref().on('value', function (snap) {
     var userRef;
+
+    if (userLogged != undefined) {
+        
+        var howLong = userLogged.length;
+        var userNumber = userLogged.charAt(howLong - 1);
+        var userRef = 'User' + userNumber;
+        var favRef = '/User' + userNumber + '/favorites';
+
+
+        if (snap.child(favRef).exists()) {
+            console.log(snap.val())
+           
+            actualUserFav = snap.val()[userRef].favorites.favorite;
+            actualUserFav = JSON.parse(actualUserFav);
+        }
+    }
     if (snap.child("/userAuth").exists()) {
         var currentid = snap.val().userAuth.userid;
         var currentpwd = snap.val().userAuth.userpwd;
@@ -27,6 +45,9 @@ database.ref().on('value', function (snap) {
         var userNumber = currentid.charAt(howLong - 1)
         var userRef = 'User' + userNumber;
         var childRef = '/User' + userNumber;
+        var favRef = childRef + '/favorites'
+
+
         if (snap.child(childRef).exists()) {
 
             idInDb = snap.val()[userRef].userid;
@@ -43,6 +64,11 @@ database.ref().on('value', function (snap) {
                     $('#logout').show();
                     database.ref('/userAuth').set({})
                     isLogged = true;
+                    if (snap.child(favRef).exists()) {
+                        actualUserFav = snap.val()[userRef].favorites.favorite;
+                        actualUserFav = JSON.parse(actualUserFav);
+                    }
+
                     database.ref(childRef + '/isLogged').set({
                         isLogged: true
                     })
@@ -59,6 +85,7 @@ database.ref().on('value', function (snap) {
             }
         }
     }
+
 })
 
 
@@ -82,7 +109,7 @@ $('#submitbutton').on('click', function (event) {
     database.ref('/userCount').set({
         userCount: userCount
     })
-        
+
     var newUserRef = database.ref('/User' + userCount)
     userid = userid + userCount;
     newUserRef.set({
@@ -107,9 +134,9 @@ $('#logout').hide();
 $('#logout').on('click', function () {
     $('#id-login').val('')
     $('#pwd-login').val('')
+    actualUserFav = undefined;
     isLogged = false
     loggedRef = '/User' + userLogged.charAt(userLogged.length - 1) + '/isLogged';
-    console.log(loggedRef);
     database.ref(loggedRef).set({
         isLogged: false
     })
@@ -119,5 +146,17 @@ $('#logout').on('click', function () {
     $('#logform').show();
     $('#logout').hide();
 })
+
+$('#favorite').on('click', function () {
+    var howLong = userLogged.length;
+    var userNumber = userLogged.charAt(howLong - 1);
+    var userRef = '/User' + userNumber + '/favorites';
+
+    database.ref(userRef).set({
+        favorite: JSON.stringify(favortiteArray)
+    })
+
+})
+
 
 
