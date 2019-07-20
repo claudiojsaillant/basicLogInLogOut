@@ -105,6 +105,8 @@ $('#logbutton').on('click', function () {
 
 $('#logout').hide();
 $('#logout').on('click', function () {
+    $('#id-login').val('')
+    $('#pwd-login').val('')
     isLogged = false
     loggedRef = '/User' + userLogged.charAt(userLogged.length - 1) + '/isLogged';
     console.log(loggedRef);
