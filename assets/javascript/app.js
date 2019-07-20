@@ -11,29 +11,22 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-
 // Create a variable to reference the database.
 var database = firebase.database();
 var userCount = 0;
 var isLogged;
 var userLogged;
-var favortiteArray = ['family'];
+var favortiteArray = ['manuel'];
 var actualUserFav;
 
 database.ref().on('value', function (snap) {
     var userRef;
-
     if (userLogged != undefined) {
-        
         var howLong = userLogged.length;
         var userNumber = userLogged.charAt(howLong - 1);
         var userRef = 'User' + userNumber;
         var favRef = '/User' + userNumber + '/favorites';
-
-
         if (snap.child(favRef).exists()) {
-            console.log(snap.val())
-           
             actualUserFav = snap.val()[userRef].favorites.favorite;
             actualUserFav = JSON.parse(actualUserFav);
         }
@@ -47,12 +40,9 @@ database.ref().on('value', function (snap) {
         var childRef = '/User' + userNumber;
         var favRef = childRef + '/favorites'
 
-
         if (snap.child(childRef).exists()) {
-
             idInDb = snap.val()[userRef].userid;
             pwdInDb = snap.val()[userRef].userpwd;
-
             if (currentid === idInDb) {
                 console.log('Your id is good!')
                 if (currentpwd === pwdInDb) {
@@ -68,7 +58,6 @@ database.ref().on('value', function (snap) {
                         actualUserFav = snap.val()[userRef].favorites.favorite;
                         actualUserFav = JSON.parse(actualUserFav);
                     }
-
                     database.ref(childRef + '/isLogged').set({
                         isLogged: true
                     })
@@ -85,10 +74,7 @@ database.ref().on('value', function (snap) {
             }
         }
     }
-
 })
-
-
 
 database.ref('/userCount').on('value', function (snap) {
     if (snap.child("/userCount").exists()) {
@@ -97,44 +83,51 @@ database.ref('/userCount').on('value', function (snap) {
 })
 
 $('#submitbutton').on('click', function (event) {
-    userCount++;
     event.preventDefault();
-    var userid = $('#id-input').val();
-    var userpwd = $('#pwd-input').val();
-    printID = userid + userCount;
-    $('#id-input').val('');
-    $('#pwd-input').val('');
-    alert("Your generated user id is : " + printID + " , when you log in, you have to use this ID with your password!");
-
-    database.ref('/userCount').set({
-        userCount: userCount
-    })
-
-    var newUserRef = database.ref('/User' + userCount)
-    userid = userid + userCount;
-    newUserRef.set({
-        userid: userid,
-        userpwd: userpwd
-    })
-
+    var userid = $('#id-input').val().trim();
+    var userpwd = $('#pwd-input').val().trim();
+    if (userid != '' && userpwd != '') {
+        userCount++;
+        printID = userid + userCount;
+        $('#id-input').val('');
+        $('#pwd-input').val('');
+        alert("Your generated user id is : " + printID + " , when you log in, you have to use this ID with your password!");
+        database.ref('/userCount').set({
+            userCount: userCount
+        })
+        var newUserRef = database.ref('/User' + userCount)
+        userid = userid + userCount;
+        newUserRef.set({
+            userid: userid,
+            userpwd: userpwd
+        })
+    }
+    else {
+        alert('Input a valid userID/Pasword')
+    }
 })
 
-$('#logbutton').on('click', function () {
-    var logid = $('#id-login').val()
-    var logpwd = $('#pwd-login').val()
-    console.log('Logid:', logid);
-    console.log('Pwd:', logpwd);
-    database.ref('/userAuth').set({
-        userid: logid,
-        userpwd: logpwd
-    })
+$('#logbutton').on('click', function (event) {
+    event.preventDefault();
+    var logid = $('#id-login').val().trim();
+    var logpwd = $('#pwd-login').val().trim();
+
+    if (logid != '' && logpwd != '') {
+        database.ref('/userAuth').set({
+            userid: logid,
+            userpwd: logpwd
+        })
+    }
+    else {
+        alert('Input a valid userID/Pasword')
+    }
 })
 
 $('#logout').hide();
 $('#logout').on('click', function () {
     $('#id-login').val('')
     $('#pwd-login').val('')
-    actualUserFav = undefined;
+    actualUserFav = [];
     isLogged = false
     loggedRef = '/User' + userLogged.charAt(userLogged.length - 1) + '/isLogged';
     database.ref(loggedRef).set({
@@ -155,7 +148,6 @@ $('#favorite').on('click', function () {
     database.ref(userRef).set({
         favorite: JSON.stringify(favortiteArray)
     })
-
 })
 
 
